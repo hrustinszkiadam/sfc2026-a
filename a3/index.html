@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<style>
+			body {
+				margin: 0;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.system {
+				position: relative;
+			}
+
+			/* Base setup for all three bodies */
+			.sprite {
+				background-image: url('./assets/sprite.png');
+				position: absolute;
+				border-radius: 50%;
+			}
+
+			/* SUN: Placed dead center */
+			.sun {
+				width: 300px;
+				height: 300px;
+				background-size: 900px 300px; /* 3 times the width */
+				background-position: 0 0;
+				top: -150px;
+				left: -150px;
+			}
+
+			/* EARTH ORBIT: Rotates around the sun every 8s */
+			.earth-orbit {
+				position: absolute;
+				animation: spin 8s linear infinite;
+				top: 0;
+			}
+
+			.earth {
+				width: 150px;
+				height: 150px;
+				background-size: 450px 150px;
+				background-position: -150px 0;
+				top: -75px;
+				left: 240px;
+			}
+
+			/* MOON ORBIT: Anchored exactly to the center of the Earth, rotates every 2s */
+			.moon-orbit {
+				position: absolute;
+				top: 0;
+				left: 315px; /* Earth's left (240) + half Earth's width (75) = 315 */
+				animation: spin 2s linear infinite;
+			}
+
+			.moon {
+				width: 60px;
+				height: 60px;
+				background-size: 180px 60px;
+				background-position: -300px 0;
+				top: -30px;
+				left: 75px; /* Pushes Moon out from Earth */
+			}
+
+			@keyframes spin {
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+		</style>
+		<title>Moon Orbit</title>
+	</head>
+	<body>
+		<div class="system">
+			<div class="sprite sun"></div>
+
+			<div class="earth-orbit">
+				<div class="sprite earth"></div>
+
+				<div class="moon-orbit">
+					<div class="sprite moon"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

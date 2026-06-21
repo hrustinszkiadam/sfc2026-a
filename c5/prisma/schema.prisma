@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Category {
+  fantasy
+  science_fiction
+  romance
+  thriller
+  mystery
+  history
+}
+
+model Book {
+  @@map("books")
+
+  id          Int      @id @default(autoincrement())
+  title       String
+  author      String
+  category    Category
+
+  loans       Loan[]
+}
+
+model Member {
+  @@map("members")
+
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String   @unique
+
+  loans       Loan[]
+}
+
+model Loan {
+  @@map("loans")
+
+  id          Int      @id @default(autoincrement())
+  book_id     Int
+  member_id   Int
+  loan_date    DateTime @default(now())
+  return_date  DateTime?
+
+  book        Book     @relation(fields: [book_id], references: [id])
+  member      Member   @relation(fields: [member_id], references: [id])
+}

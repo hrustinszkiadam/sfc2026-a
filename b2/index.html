@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Client-side Validation</title>
+		<style>
+			/* Exact same CSS as the starter code */
+			body {
+				margin: 0;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: #f0f2f5;
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			}
+
+			.form-container {
+				background: white;
+				padding: 30px;
+				border-radius: 12px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+				width: 350px;
+			}
+
+			h2 {
+				margin-top: 0;
+				color: #333;
+				text-align: center;
+			}
+
+			.form-group {
+				margin-bottom: 20px;
+				display: flex;
+				flex-direction: column;
+			}
+
+			label {
+				font-weight: bold;
+				color: #555;
+				margin-bottom: 5px;
+				font-size: 0.9rem;
+			}
+
+			input,
+			textarea {
+				padding: 10px;
+				border: 1px solid #ccc;
+				border-radius: 6px;
+				font-size: 1rem;
+				font-family: inherit;
+				transition: border-color 0.2s;
+			}
+
+			input:focus,
+			textarea:focus {
+				outline: none;
+				border-color: slateblue;
+			}
+
+			/* JS will add this class to trigger the red error visuals */
+			input.error,
+			textarea.error {
+				border-color: red;
+				background-color: white;
+			}
+
+			.error-text {
+				color: red;
+				font-size: 0.8rem;
+				margin-top: 5px;
+				display: none;
+			}
+
+			button {
+				width: 100%;
+				padding: 12px;
+				background-color: slateblue;
+				color: white;
+				border: none;
+				border-radius: 6px;
+				font-size: 1rem;
+				font-weight: bold;
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+
+			button:hover {
+				background-color: mediumslateblue;
+			}
+
+			.success-alert {
+				display: none;
+				background-color: #d4edda;
+				color: darkgreen;
+				padding: 15px;
+				border-radius: 6px;
+				margin-bottom: 20px;
+				text-align: center;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="form-container">
+			<h2>Contact Us</h2>
+
+			<div
+				class="success-alert"
+				id="success-message"
+			>
+				Submission successful! We'll be in touch.
+			</div>
+
+			<form
+				id="contact-form"
+				novalidate
+			>
+				<div class="form-group">
+					<label for="name">Name</label>
+					<input
+						type="text"
+						id="name"
+						placeholder="John Doe"
+					/>
+					<span
+						class="error-text"
+						id="name-error"
+						>Name cannot be empty.</span
+					>
+				</div>
+
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input
+						type="email"
+						id="email"
+						placeholder="john@example.com"
+					/>
+					<span
+						class="error-text"
+						id="email-error"
+						>Please enter a valid email address.</span
+					>
+				</div>
+
+				<div class="form-group">
+					<label for="message">Message</label>
+					<textarea
+						id="message"
+						rows="4"
+						placeholder="How can we help?"
+					></textarea>
+					<span
+						class="error-text"
+						id="message-error"
+						>Message cannot be empty.</span
+					>
+				</div>
+
+				<button type="submit">Send Message</button>
+			</form>
+		</div>
+
+		<script>
+			// Grab DOM Elements
+			const form = document.getElementById('contact-form');
+			const nameInput = document.getElementById('name');
+			const emailInput = document.getElementById('email');
+			const messageInput = document.getElementById('message');
+			const successAlert = document.getElementById('success-message');
+
+			// Helper function to easily toggle error styles
+			function setError(inputElement, errorElementId, isError) {
+				const errorText = document.getElementById(errorElementId);
+				if (isError) {
+					inputElement.classList.add('error');
+					errorText.style.display = 'block';
+				} else {
+					inputElement.classList.remove('error');
+					errorText.style.display = 'none';
+				}
+			}
+
+			function validateInputs() {
+				let isValid = true;
+
+				// Validate Name (must not be empty)
+				const nameValue = nameInput.value.trim();
+				if (nameValue === '') {
+					setError(nameInput, 'name-error', true);
+					isValid = false;
+				} else {
+					setError(nameInput, 'name-error', false);
+				}
+
+				// Validate Email (must not be empty, must contain @ and .)
+				const emailValue = emailInput.value.trim();
+				if (emailValue === '' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+					setError(emailInput, 'email-error', true);
+					isValid = false;
+				} else {
+					setError(emailInput, 'email-error', false);
+				}
+
+				// Validate Message (must not be empty)
+				const messageValue = messageInput.value.trim();
+				if (messageValue === '') {
+					setError(messageInput, 'message-error', true);
+					isValid = false;
+				} else {
+					setError(messageInput, 'message-error', false);
+				}
+
+				return isValid;
+			}
+
+			// Form Submission Handler
+			form.addEventListener('submit', function (e) {
+				e.preventDefault();
+
+				// Reset success message on new attempt
+				successAlert.style.display = 'none';
+
+				// Validate Inputs
+				const isValid = validateInputs();
+
+				// Handle Validation Result
+				if (isValid) {
+					successAlert.style.display = 'block';
+					form.reset();
+				}
+			});
+		</script>
+	</body>
+</html>

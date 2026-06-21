@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>3D Chart</title>
+		<style>
+			body {
+				margin: 0;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: #f0f0f0;
+				font-family: Arial, sans-serif;
+			}
+
+			/* Chart base */
+			.chart-container {
+				display: flex;
+				align-items: flex-end; /* Anchors bars to the bottom */
+				gap: 4rem;
+				aspect-ratio: 4 / 3;
+				padding: 0 40px;
+				border-bottom: 2px solid #ccc;
+				border-left: 2px solid #ccc;
+			}
+
+			/* 1. FRONT FACE OF THE 3D BAR */
+			.bar {
+				width: 40px;
+				background-color: #3498db;
+				position: relative;
+			}
+
+			/* 2. TOP FACE OF THE 3D BAR */
+			.bar::before {
+				content: '';
+				position: absolute;
+				top: -20px; /* Shift up by the depth size */
+				left: 0;
+				width: 100%;
+				height: 20px; /* Depth size */
+				background-color: #5dade2; /* Lighter top */
+				transform-origin: bottom left;
+				transform: skewX(-45deg); /* Skew sideways */
+			}
+
+			/* 3. RIGHT SIDE FACE OF THE 3D BAR */
+			.bar::after {
+				content: '';
+				position: absolute;
+				bottom: 0;
+				right: -20px; /* Shift right by the depth size */
+				width: 20px; /* Depth size */
+				height: 100%;
+				background-color: #2980b9; /* Darker side */
+				transform-origin: bottom left;
+				transform: skewY(-45deg); /* Skew upwards */
+			}
+
+			/* Floating Value Labels */
+			.value {
+				position: absolute;
+				top: -45px;
+				left: 50%;
+				transform: translateX(-50%);
+				font-weight: bold;
+				color: #333;
+			}
+
+			/* --- ANIMATIONS FOR THE 4 VALUES --- */
+			.bar-60 {
+				animation: grow-60 1.5s ease-out forwards;
+			}
+			.bar-25 {
+				animation: grow-25 1.5s ease-out forwards;
+			}
+			.bar-35 {
+				animation: grow-35 1.5s ease-out forwards;
+			}
+			.bar-80 {
+				animation: grow-80 1.5s ease-out forwards;
+			}
+
+			@keyframes grow-60 {
+				0% {
+					height: 0;
+				}
+				100% {
+					height: 60%;
+				}
+			}
+			@keyframes grow-25 {
+				0% {
+					height: 0;
+				}
+				100% {
+					height: 25%;
+				}
+			}
+			@keyframes grow-35 {
+				0% {
+					height: 0;
+				}
+				100% {
+					height: 35%;
+				}
+			}
+			@keyframes grow-80 {
+				0% {
+					height: 0;
+				}
+				100% {
+					height: 80%;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="chart-container">
+			<div class="bar bar-60"><div class="value">60</div></div>
+			<div class="bar bar-25"><div class="value">25</div></div>
+			<div class="bar bar-35"><div class="value">35</div></div>
+			<div class="bar bar-80"><div class="value">80</div></div>
+		</div>
+	</body>
+</html>

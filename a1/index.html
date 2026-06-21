@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Traffic Light</title>
+		<style>
+			body {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+				margin: 0;
+				font-family: 'Courier New', Courier, monospace;
+			}
+
+			.traffic-light {
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				background-color: #666;
+				padding: 25px;
+				border-radius: 25px;
+				border: 4px solid #333;
+				/* Margin to offset the numbers appearing on the right */
+				margin-right: 80px;
+			}
+
+			.traffic-light::before {
+				content: '';
+				position: absolute;
+				top: -100px;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 15px;
+				height: 100px;
+				background-color: #333;
+			}
+
+			/* Base Light Styles */
+			.light {
+				width: 90px;
+				height: 90px;
+				border-radius: 50%;
+				margin: 15px 0;
+				position: relative;
+				background-color: #000;
+				opacity: 0.2; /* Dim by default */
+				box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+			}
+
+			/* Countdown Number Styling */
+			.light::after {
+				content: '';
+				position: absolute;
+				left: 150px;
+				top: 50%;
+				transform: translateY(-50%);
+				font-size: 3rem;
+				font-weight: bold;
+				color: #333;
+			}
+
+			.red {
+				background-color: red;
+				animation: red-light 13s infinite;
+			}
+			.red::after {
+				color: red;
+				animation: red-num 13s infinite;
+			}
+
+			.yellow {
+				background-color: yellow;
+				animation: yellow-light 13s infinite;
+			}
+			.yellow::after {
+				color: yellow;
+				animation: yellow-num 13s infinite;
+			}
+
+			.green {
+				background-color: lightgreen;
+				animation: green-light 13s infinite;
+			}
+			.green::after {
+				color: lightgreen;
+				animation: green-num 13s infinite;
+			}
+
+			/* --- LAMP BRIGHTNESS ANIMATIONS --- */
+			@keyframes green-light {
+				0%,
+				38.4% {
+					opacity: 1;
+					box-shadow: 0 0 40px lightgreen;
+				}
+				38.5%,
+				100% {
+					opacity: 0.2;
+					box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+				}
+			}
+
+			@keyframes yellow-light {
+				0%,
+				38.4% {
+					opacity: 0.2;
+					box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+				}
+				38.5%,
+				61.4% {
+					opacity: 1;
+					box-shadow: 0 0 40px yellow;
+				}
+				61.5%,
+				100% {
+					opacity: 0.2;
+					box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+				}
+			}
+
+			@keyframes red-light {
+				0%,
+				61.4% {
+					opacity: 0.2;
+					box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+				}
+				61.5%,
+				99.9% {
+					opacity: 1;
+					box-shadow: 0 0 40px red;
+				}
+				100% {
+					opacity: 0.2;
+					box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+				}
+			}
+
+			/* --- COUNTDOWN NUMBER ANIMATIONS (~7.7% per second) --- */
+
+			/* 1-5 */
+			@keyframes green-num {
+				0%,
+				7.6% {
+					content: '5';
+				}
+				7.7%,
+				15.3% {
+					content: '4';
+				}
+				15.4%,
+				23.0% {
+					content: '3';
+				}
+				23.1%,
+				30.7% {
+					content: '2';
+				}
+				30.8%,
+				38.4% {
+					content: '1';
+				}
+				38.5%,
+				100% {
+					content: '';
+				}
+			}
+
+			/* 6-8 */
+			@keyframes yellow-num {
+				0%,
+				38.4% {
+					content: '';
+				}
+				38.5%,
+				46.1% {
+					content: '3';
+				}
+				46.2%,
+				53.7% {
+					content: '2';
+				}
+				53.8%,
+				61.4% {
+					content: '1';
+				}
+				61.5%,
+				100% {
+					content: '';
+				}
+			}
+
+			/* 9-13 */
+			@keyframes red-num {
+				0%,
+				61.4% {
+					content: '';
+				}
+				61.5%,
+				69.1% {
+					content: '5';
+				}
+				69.2%,
+				76.8% {
+					content: '4';
+				}
+				76.9%,
+				84.5% {
+					content: '3';
+				}
+				84.6%,
+				92.2% {
+					content: '2';
+				}
+				92.3%,
+				99.9% {
+					content: '1';
+				}
+				100% {
+					content: '';
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="traffic-light">
+			<div class="light red"></div>
+			<div class="light yellow"></div>
+			<div class="light green"></div>
+		</div>
+	</body>
+</html>

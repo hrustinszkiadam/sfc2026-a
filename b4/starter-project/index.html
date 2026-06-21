@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Mini Calendar</title>
+		<style>
+			body {
+				margin: 0;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: #f0f2f5;
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			}
+
+			.calendar {
+				background: white;
+				width: 320px;
+				border-radius: 12px;
+				padding: 20px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			}
+
+			.header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 20px;
+			}
+
+			.header h2 {
+				margin: 0;
+				font-size: 1.2rem;
+				color: #333;
+			}
+
+			button {
+				background: #f0f2f5;
+				border: none;
+				border-radius: 6px;
+				padding: 8px 12px;
+				cursor: pointer;
+				font-weight: bold;
+				transition: background 0.2s;
+			}
+
+			button:hover {
+				background: #e4e6eb;
+			}
+
+			.weekdays {
+				display: grid;
+				grid-template-columns: repeat(7, 1fr);
+				text-align: center;
+				font-weight: bold;
+				font-size: 0.85rem;
+				color: #666;
+				margin-bottom: 10px;
+			}
+
+			.days-grid {
+				display: grid;
+				grid-template-columns: repeat(7, 1fr);
+				gap: 5px;
+			}
+
+			.day {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				aspect-ratio: 1 / 1;
+				font-size: 0.95rem;
+				color: #333;
+				border-radius: 50%;
+			}
+
+			/* Out of month dates */
+			.day.inactive {
+				color: #bbb;
+			}
+
+			/* The highlighted system date */
+			.day.today {
+				background-color: #3498db;
+				color: white;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="calendar">
+			<div class="header">
+				<button id="prev">&lt;</button>
+				<h2 id="month-year">June 2026</h2>
+				<button id="next">&gt;</button>
+			</div>
+
+			<div class="weekdays">
+				<div>Su</div>
+				<div>Mo</div>
+				<div>Tu</div>
+				<div>We</div>
+				<div>Th</div>
+				<div>Fr</div>
+				<div>Sa</div>
+			</div>
+
+			<div
+				class="days-grid"
+				id="days-grid"
+			>
+				<div class="day inactive">31</div>
+				<div class="day">1</div>
+				<div class="day">2</div>
+				<div class="day">3</div>
+				<div class="day">4</div>
+				<div class="day">5</div>
+				<div class="day">6</div>
+				<div class="day">7</div>
+				<div class="day">8</div>
+				<div class="day">9</div>
+				<div class="day">10</div>
+				<div class="day">11</div>
+				<div class="day">12</div>
+				<div class="day">13</div>
+				<div class="day">14</div>
+				<div class="day">15</div>
+				<div class="day">16</div>
+				<div class="day">17</div>
+				<div class="day">18</div>
+				<div class="day">19</div>
+				<div class="day">20</div>
+				<div class="day">21</div>
+				<div class="day today">22</div>
+				<div class="day">23</div>
+				<div class="day">24</div>
+				<div class="day">25</div>
+				<div class="day">26</div>
+				<div class="day">27</div>
+				<div class="day">28</div>
+				<div class="day">29</div>
+				<div class="day">30</div>
+				<div class="day inactive">1</div>
+				<div class="day inactive">2</div>
+				<div class="day inactive">3</div>
+				<div class="day inactive">4</div>
+			</div>
+		</div>
+	</body>
+</html>

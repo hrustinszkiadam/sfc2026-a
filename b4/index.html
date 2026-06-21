@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Mini Calendar - Solution</title>
+		<style>
+			body {
+				margin: 0;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: #f0f2f5;
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			}
+
+			.calendar {
+				background: white;
+				width: 320px;
+				border-radius: 12px;
+				padding: 20px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			}
+
+			.header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 20px;
+			}
+
+			.header h2 {
+				margin: 0;
+				font-size: 1.2rem;
+				color: #333;
+			}
+
+			button {
+				background: #f0f2f5;
+				border: none;
+				border-radius: 6px;
+				padding: 8px 12px;
+				cursor: pointer;
+				font-weight: bold;
+				transition: background 0.2s;
+			}
+
+			button:hover {
+				background: #e4e6eb;
+			}
+
+			.weekdays {
+				display: grid;
+				grid-template-columns: repeat(7, 1fr);
+				text-align: center;
+				font-weight: bold;
+				font-size: 0.85rem;
+				color: #666;
+				margin-bottom: 10px;
+			}
+
+			.days-grid {
+				display: grid;
+				grid-template-columns: repeat(7, 1fr);
+				gap: 5px;
+			}
+
+			.day {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				aspect-ratio: 1 / 1;
+				font-size: 0.95rem;
+				color: #333;
+				border-radius: 50%;
+			}
+
+			/* Out of month dates */
+			.day.inactive {
+				color: #bbb;
+			}
+
+			/* The highlighted system date */
+			.day.today {
+				background-color: #3498db;
+				color: white;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="calendar">
+			<div class="header">
+				<button id="prev">&lt;</button>
+				<h2 id="month-year"></h2>
+				<button id="next">&gt;</button>
+			</div>
+
+			<div class="weekdays">
+				<div>Su</div>
+				<div>Mo</div>
+				<div>Tu</div>
+				<div>We</div>
+				<div>Th</div>
+				<div>Fr</div>
+				<div>Sa</div>
+			</div>
+
+			<div
+				class="days-grid"
+				id="days-grid"
+			></div>
+		</div>
+
+		<script>
+			const monthYearDisplay = document.getElementById('month-year');
+			const daysGrid = document.getElementById('days-grid');
+			const prevBtn = document.getElementById('prev');
+			const nextBtn = document.getElementById('next');
+
+			const monthNames = [
+				'January',
+				'February',
+				'March',
+				'April',
+				'May',
+				'June',
+				'July',
+				'August',
+				'September',
+				'October',
+				'November',
+				'December',
+			];
+
+			// Get the actual system date (immutable reference point)
+			const systemDate = new Date();
+
+			// Mutable state for the currently viewed month/year
+			let currentMonth = systemDate.getMonth();
+			let currentYear = systemDate.getFullYear();
+
+			function renderCalendar() {
+				// Clear out the previous days
+				daysGrid.innerHTML = '';
+
+				// Update the header text
+				monthYearDisplay.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+				// Get the day of the week the month starts on (0 = Sunday, 6 = Saturday)
+				const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
+
+				// Get the total number of days in the current month
+				const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+				// Get the total number of days in the previous month
+				const prevLastDay = new Date(currentYear, currentMonth, 0).getDate();
+
+				let daysHtml = '';
+
+				// 1. Generate previous month's trailing days
+				for (let x = firstDayIndex; x > 0; x--) {
+					daysHtml += `<div class="day inactive">${prevLastDay - x + 1}</div>`;
+				}
+
+				// 2. Generate current month's active days
+				for (let i = 1; i <= lastDay; i++) {
+					// Check if this cell represents the exact system date
+					const isToday =
+						i === systemDate.getDate() &&
+						currentMonth === systemDate.getMonth() &&
+						currentYear === systemDate.getFullYear();
+
+					if (isToday) {
+						daysHtml += `<div class="day today">${i}</div>`;
+					} else {
+						daysHtml += `<div class="day">${i}</div>`;
+					}
+				}
+
+				// 3. Generate next month's leading days to finish the row
+				const totalCellsSoFar = firstDayIndex + lastDay;
+				const nextDaysToFill = (7 - (totalCellsSoFar % 7)) % 7;
+
+				for (let j = 1; j <= nextDaysToFill; j++) {
+					daysHtml += `<div class="day inactive">${j}</div>`;
+				}
+
+				// Inject the generated HTML into the grid
+				daysGrid.innerHTML = daysHtml;
+			}
+
+			// Event Listeners for navigation buttons
+			prevBtn.addEventListener('click', () => {
+				currentMonth--;
+				if (currentMonth < 0) {
+					currentMonth = 11;
+					currentYear--;
+				}
+				renderCalendar();
+			});
+
+			nextBtn.addEventListener('click', () => {
+				currentMonth++;
+				if (currentMonth > 11) {
+					currentMonth = 0;
+					currentYear++;
+				}
+				renderCalendar();
+			});
+
+			// Initial render on page load
+			renderCalendar();
+		</script>
+	</body>
+</html>

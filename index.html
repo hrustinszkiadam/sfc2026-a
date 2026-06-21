@@ -31,6 +31,12 @@
 				background-color: slategrey;
 			}
 
+			.disabled {
+				background-color: gray;
+				pointer-events: none;
+				user-select: none;
+			}
+
 			@media (max-width: 1150px) {
 				body {
 					grid-template-columns: repeat(4, 1fr);
@@ -68,7 +74,15 @@
 		<a href="/c1">C1</a>
 		<a href="/c2">C2</a>
 		<a href="/c3">C3</a>
-		<a href="/c4">C4</a>
-		<a href="/c5">C5</a>
+		<a
+			href="/c4"
+			class="disabled"
+			>C4</a
+		>
+		<a
+			href="/c5"
+			class="disabled"
+			>C5</a
+		>
 	</body>
 </html>

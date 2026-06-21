@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>POS Quantity & Price Calculator</title>
+		<style>
+			/* Exact same CSS as the starter code */
+			body {
+				margin: 0;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: #f0f2f5;
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			}
+
+			.pos-row {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				width: 450px;
+				padding: 20px;
+				background: white;
+				border-radius: 12px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			}
+
+			.item-info {
+				display: flex;
+				flex-direction: column;
+			}
+
+			.item-name {
+				font-size: 1.2rem;
+				font-weight: bold;
+				color: #333;
+			}
+
+			.unit-price {
+				color: #666;
+				margin-top: 4px;
+			}
+
+			.quantity-controls {
+				display: flex;
+				align-items: center;
+				gap: 15px;
+			}
+
+			.btn {
+				width: 36px;
+				height: 36px;
+				font-size: 1.2rem;
+				font-weight: bold;
+				color: #333;
+				background-color: #e4e6eb;
+				border: none;
+				border-radius: 8px;
+				cursor: pointer;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				transition: background 0.2s;
+			}
+
+			.btn:hover {
+				background-color: #d8dadf;
+			}
+
+			.btn:active {
+				transform: scale(0.95);
+			}
+
+			/* Visual feedback when button is disabled */
+			.btn:disabled {
+				opacity: 0.5;
+				cursor: not-allowed;
+			}
+
+			.quantity {
+				font-size: 1.2rem;
+				font-weight: bold;
+				min-width: 20px;
+				text-align: center;
+			}
+
+			.total-price {
+				font-size: 1.4rem;
+				font-weight: bold;
+				color: green;
+				min-width: 80px;
+				text-align: right;
+			}
+		</style>
+	</head>
+	<body>
+		<div
+			class="pos-row"
+			id="artisan-coffee"
+		>
+			<div class="item-info">
+				<span class="item-name">Artisan Coffee</span>
+				<span
+					class="unit-price"
+					data-price="4.50"
+					>$4.50 / unit</span
+				>
+			</div>
+
+			<div class="quantity-controls">
+				<button class="btn btn-minus">−</button>
+				<span class="quantity">1</span>
+				<button class="btn btn-plus">+</button>
+			</div>
+
+			<div class="total-price">$4.50</div>
+		</div>
+
+		<script>
+			// 1. Grab all the necessary DOM elements
+			const btnMinus = document.querySelector('#artisan-coffee .btn-minus');
+			const btnPlus = document.querySelector('#artisan-coffee .btn-plus');
+			const qtyDisplay = document.querySelector('#artisan-coffee .quantity');
+			const totalDisplay = document.querySelector('#artisan-coffee .total-price');
+
+			// 2. Extract the base price from the HTML data attribute and convert to a Number
+			const unitPriceElement = document.querySelector('#artisan-coffee .unit-price');
+			const unitPrice = parseFloat(unitPriceElement.getAttribute('data-price'));
+
+			// 3. Keep track of current quantity state
+			let currentQuantity = 1;
+
+			// 4. Function to update the DOM elements based on the current state
+			function updateUI() {
+				// Update quantity text
+				qtyDisplay.textContent = currentQuantity;
+
+				// Calculate total, force it to 2 decimal places, and update text
+				const total = (currentQuantity * unitPrice).toFixed(2);
+				totalDisplay.textContent = `$${total}`;
+
+				// Optional UX improvement: Disable the minus button if quantity is 0
+				btnMinus.disabled = currentQuantity === 0;
+			}
+
+			// 5. Event listener for Plus button
+			btnPlus.addEventListener('click', () => {
+				currentQuantity++;
+				updateUI();
+			});
+
+			// 6. Event listener for Minus button
+			btnMinus.addEventListener('click', () => {
+				// Guard clause: Only decrement if strictly greater than 0
+				if (currentQuantity > 0) {
+					currentQuantity--;
+					updateUI();
+				}
+			});
+
+			// Initialize the UI on first load
+			updateUI();
+		</script>
+	</body>
+</html>

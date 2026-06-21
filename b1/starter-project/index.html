@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>POS Quantity & Price Calculator</title>
+		<style>
+			body {
+				margin: 0;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: #f0f2f5;
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			}
+
+			.pos-row {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				width: 450px;
+				padding: 20px;
+				background: white;
+				border-radius: 12px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			}
+
+			.item-info {
+				display: flex;
+				flex-direction: column;
+			}
+
+			.item-name {
+				font-size: 1.2rem;
+				font-weight: bold;
+				color: #333;
+			}
+
+			.unit-price {
+				color: #666;
+				margin-top: 4px;
+			}
+
+			.quantity-controls {
+				display: flex;
+				align-items: center;
+				gap: 15px;
+			}
+
+			.btn {
+				width: 36px;
+				height: 36px;
+				font-size: 1.2rem;
+				font-weight: bold;
+				color: #333;
+				background-color: #e4e6eb;
+				border: none;
+				border-radius: 8px;
+				cursor: pointer;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				transition: background 0.2s;
+			}
+
+			.btn:hover {
+				background-color: #d8dadf;
+			}
+
+			.btn:active {
+				transform: scale(0.95);
+			}
+
+			.quantity {
+				font-size: 1.2rem;
+				font-weight: bold;
+				min-width: 20px;
+				text-align: center;
+			}
+
+			.total-price {
+				font-size: 1.4rem;
+				font-weight: bold;
+				color: #2ecc71;
+				min-width: 80px;
+				text-align: right;
+			}
+		</style>
+	</head>
+	<body>
+		<div
+			class="pos-row"
+			id="artisan-coffee"
+		>
+			<div class="item-info">
+				<span class="item-name">Artisan Coffee</span>
+				<span
+					class="unit-price"
+					data-price="4.50"
+					>$4.50 / unit</span
+				>
+			</div>
+
+			<div class="quantity-controls">
+				<button class="btn btn-minus">−</button>
+				<span class="quantity">1</span>
+				<button class="btn btn-plus">+</button>
+			</div>
+
+			<div class="total-price">$4.50</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Text Slide Animation</title>
+		<style>
+			body {
+				margin: 0;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: #f0f0f0;
+				font-family: 'Helvetica Neue', Arial, sans-serif;
+			}
+
+			.text-container {
+				text-align: center;
+				font-size: 3rem;
+				font-weight: bold;
+				color: #333;
+			}
+
+			/* Base setup for all lines */
+			.line {
+				opacity: 0; /* Hidden by default */
+				animation: slide-in-out 6s ease-in-out infinite;
+			}
+
+			/* Staggered Timings: 3rd line -> 2nd line -> 1st line */
+			/* 6s / 10 = 0.6s */
+			.line3 {
+				animation-delay: 0s;
+			}
+			.line2 {
+				animation-delay: 0.6s;
+			}
+			.line1 {
+				animation-delay: 1.2s;
+			}
+
+			/* Accent color for the 3rd line */
+			.accent {
+				color: slateblue;
+			}
+
+			/* The Animation Logic */
+			@keyframes slide-in-out {
+				0% {
+					opacity: 0;
+					transform: translateY(-60px); /* Starts above */
+				}
+				15%,
+				70% {
+					opacity: 1;
+					transform: translateY(0); /* Rests in the center */
+				}
+				85%,
+				100% {
+					opacity: 0;
+					transform: translateY(30px); /* Fades out slightly downwards */
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="text-container">
+			<div class="line line1">Hi, nice</div>
+			<div class="line line2">to see</div>
+			<div class="line line3 accent">you here</div>
+		</div>
+	</body>
+</html>

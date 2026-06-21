@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Sortable</title>
+		<style>
+			body {
+				margin: 0;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: #f0f2f5;
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			}
+			.board {
+				display: flex;
+				gap: 30px;
+			}
+			.column {
+				background-color: #e4e6eb;
+				width: 300px;
+				border-radius: 12px;
+				padding: 20px;
+				display: flex;
+				flex-direction: column;
+			}
+			h3 {
+				margin-top: 0;
+				color: #333;
+				font-size: 1.2rem;
+			}
+			.task-list {
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+				min-height: 150px;
+			}
+
+			.task {
+				background-color: white;
+				padding: 15px;
+				border-radius: 8px;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+				cursor: grab;
+				font-weight: 500;
+				color: #333;
+				border: 1px solid transparent;
+				transition:
+					box-shadow 0.2s,
+					opacity 0.2s;
+			}
+			.task:hover {
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			}
+			.task:active {
+				cursor: grabbing;
+			}
+
+			/* New CSS class added by JS during the drag */
+			.task.dragging {
+				opacity: 0.4;
+				border: 1px dashed #3498db;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="board">
+			<div class="column">
+				<h3>To Do</h3>
+				<div
+					class="task-list"
+					id="todo-list"
+				>
+					<div
+						class="task"
+						draggable="true"
+					>
+						Research competitors
+					</div>
+					<div
+						class="task"
+						draggable="true"
+					>
+						Design wireframes
+					</div>
+					<div
+						class="task"
+						draggable="true"
+					>
+						Write documentation
+					</div>
+				</div>
+			</div>
+
+			<div class="column">
+				<h3>Done</h3>
+				<div
+					class="task-list"
+					id="done-list"
+				>
+					<div
+						class="task"
+						draggable="true"
+					>
+						Setup project repo
+					</div>
+					<div
+						class="task"
+						draggable="true"
+					>
+						Create database schema
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			// 1. Grab all tasks and lists
+			const tasks = document.querySelectorAll('.task');
+			const taskLists = document.querySelectorAll('.task-list');
+
+			// 2. Add drag events to every task
+			tasks.forEach((task) => {
+				task.addEventListener('dragstart', () => {
+					task.classList.add('dragging');
+				});
+
+				task.addEventListener('dragend', () => {
+					task.classList.remove('dragging');
+				});
+			});
+
+			// 3. Add dragover events to the drop zones (the lists)
+			taskLists.forEach((list) => {
+				list.addEventListener('dragover', (e) => {
+					e.preventDefault();
+
+					// Find which element the cursor is hovering right above
+					const afterElement = getDragAfterElement(list, e.clientY);
+
+					// Grab the element we are currently dragging
+					const draggable = document.querySelector('.dragging');
+
+					// If cursor is not above any specific element, append to the end of the list
+					if (afterElement == null) {
+						list.appendChild(draggable);
+					} else {
+						// Otherwise, insert it right before the element the cursor is hovering over
+						list.insertBefore(draggable, afterElement);
+					}
+				});
+			});
+
+			// 4. Helper function to calculate exact vertical position
+			function getDragAfterElement(container, y) {
+				// Get all tasks in this list EXCEPT the one currently being dragged
+				const draggableElements = [...container.querySelectorAll('.task:not(.dragging)')];
+
+				// Figure out which task is closest to the mouse cursor
+				return draggableElements.reduce(
+					(closest, current) => {
+						const box = current.getBoundingClientRect();
+						// Calculate offset (mouse Y position minus the middle of the element)
+						const offset = y - box.top - box.height / 2;
+
+						// We only care about elements below the cursor (negative offset)
+						if (offset < 0 && offset > closest.offset) {
+							return { offset: offset, element: current };
+						} else {
+							return closest;
+						}
+					},
+					{ offset: Number.NEGATIVE_INFINITY },
+				).element;
+			}
+		</script>
+	</body>
+</html>

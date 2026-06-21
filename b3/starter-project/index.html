@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Sortable</title>
+		<style>
+			body {
+				margin: 0;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: #f0f2f5;
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			}
+
+			.board {
+				display: flex;
+				gap: 30px;
+			}
+
+			.column {
+				background-color: #e4e6eb;
+				width: 300px;
+				border-radius: 12px;
+				padding: 20px;
+				display: flex;
+				flex-direction: column;
+			}
+
+			h3 {
+				margin-top: 0;
+				color: #333;
+				font-size: 1.2rem;
+			}
+
+			.task-list {
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+				/* Minimum height ensures you can drag into an empty list */
+				min-height: 150px;
+			}
+
+			.task {
+				background-color: white;
+				padding: 15px;
+				border-radius: 8px;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+				cursor: grab;
+				font-weight: 500;
+				color: #333;
+				border: 1px solid transparent;
+				transition: box-shadow 0.2s;
+			}
+
+			.task:hover {
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			}
+
+			.task:active {
+				cursor: grabbing;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="board">
+			<div class="column">
+				<h3>To Do</h3>
+				<div
+					class="task-list"
+					id="todo-list"
+				>
+					<div
+						class="task"
+						draggable="true"
+					>
+						Research competitors
+					</div>
+					<div
+						class="task"
+						draggable="true"
+					>
+						Design wireframes
+					</div>
+					<div
+						class="task"
+						draggable="true"
+					>
+						Write documentation
+					</div>
+				</div>
+			</div>
+
+			<div class="column">
+				<h3>Done</h3>
+				<div
+					class="task-list"
+					id="done-list"
+				>
+					<div
+						class="task"
+						draggable="true"
+					>
+						Setup project repo
+					</div>
+					<div
+						class="task"
+						draggable="true"
+					>
+						Create database schema
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

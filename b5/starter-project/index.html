@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Building Floor Plan Pathfinder</title>
+		<style>
+			body {
+				margin: 0;
+				height: 100vh;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				background-color: #f8f9fa;
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			}
+
+			.panel {
+				background: white;
+				padding: 15px 30px;
+				border-radius: 8px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+				margin-bottom: 30px;
+				font-size: 1.2rem;
+				font-weight: bold;
+				color: #333;
+				min-width: 300px;
+				text-align: center;
+			}
+
+			.map-container {
+				position: relative;
+				width: 440px;
+				height: 340px;
+				background: white;
+				border-radius: 12px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			}
+
+			/* SVG handles the corridor lines */
+			svg {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				pointer-events: none; /* Let clicks pass through to rooms */
+			}
+
+			.edge {
+				stroke: #ccc;
+				stroke-width: 6;
+				stroke-linecap: round;
+				transition: stroke 0.3s;
+			}
+
+			.weight {
+				font-size: 14px;
+				font-weight: bold;
+				fill: #777;
+			}
+
+			.room {
+				position: absolute;
+				width: 40px;
+				height: 40px;
+				background-color: #e4e6eb;
+				color: #333;
+				border-radius: 50%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-weight: bold;
+				cursor: pointer;
+				user-select: none;
+				transform: translate(-50%, -50%); /* Centers the div exactly on its coordinates */
+				transition: all 0.2s;
+				border: 3px solid transparent;
+			}
+
+			.room:hover {
+				transform: translate(-50%, -50%) scale(1.1);
+				background-color: #d8dadf;
+			}
+
+			/* States that JS will toggle later */
+			.room.start {
+				background-color: #2ecc71;
+				color: white;
+				border-color: #27ae60;
+			}
+
+			.room.end {
+				background-color: #e74c3c;
+				color: white;
+				border-color: #c0392b;
+			}
+
+			.room.path {
+				background-color: #3498db;
+				color: white;
+				border-color: #2980b9;
+			}
+
+			.edge.highlight {
+				stroke: #3498db;
+			}
+		</style>
+	</head>
+	<body>
+		<div
+			class="panel"
+			id="result-panel"
+		>
+			Select start room
+		</div>
+
+		<div class="map-container">
+			<svg>
+				<line
+					x1="70"
+					y1="70"
+					x2="220"
+					y2="70"
+					class="edge"
+					data-edge="A-B"
+				/>
+				<text
+					x="145"
+					y="60"
+					class="weight"
+				>
+					5
+				</text>
+
+				<line
+					x1="220"
+					y1="70"
+					x2="370"
+					y2="70"
+					class="edge"
+					data-edge="B-C"
+				/>
+				<text
+					x="295"
+					y="60"
+					class="weight"
+				>
+					4
+				</text>
+
+				<line
+					x1="70"
+					y1="170"
+					x2="220"
+					y2="170"
+					class="edge"
+					data-edge="D-E"
+				/>
+				<text
+					x="145"
+					y="160"
+					class="weight"
+				>
+					2
+				</text>
+
+				<line
+					x1="220"
+					y1="170"
+					x2="370"
+					y2="170"
+					class="edge"
+					data-edge="E-F"
+				/>
+				<text
+					x="295"
+					y="160"
+					class="weight"
+				>
+					2
+				</text>
+
+				<line
+					x1="220"
+					y1="270"
+					x2="370"
+					y2="270"
+					class="edge"
+					data-edge="H-G"
+				/>
+				<text
+					x="295"
+					y="260"
+					class="weight"
+				>
+					4
+				</text>
+
+				<line
+					x1="70"
+					y1="70"
+					x2="70"
+					y2="170"
+					class="edge"
+					data-edge="A-D"
+				/>
+				<text
+					x="55"
+					y="125"
+					class="weight"
+				>
+					3
+				</text>
+
+				<line
+					x1="370"
+					y1="70"
+					x2="370"
+					y2="170"
+					class="edge"
+					data-edge="C-F"
+				/>
+				<text
+					x="380"
+					y="125"
+					class="weight"
+				>
+					2
+				</text>
+
+				<line
+					x1="370"
+					y1="170"
+					x2="370"
+					y2="270"
+					class="edge"
+					data-edge="F-G"
+				/>
+				<text
+					x="380"
+					y="225"
+					class="weight"
+				>
+					1
+				</text>
+			</svg>
+
+			<div
+				class="room"
+				data-node="A"
+				style="left: 70px; top: 70px"
+			>
+				A
+			</div>
+			<div
+				class="room"
+				data-node="B"
+				style="left: 220px; top: 70px"
+			>
+				B
+			</div>
+			<div
+				class="room"
+				data-node="C"
+				style="left: 370px; top: 70px"
+			>
+				C
+			</div>
+
+			<div
+				class="room"
+				data-node="D"
+				style="left: 70px; top: 170px"
+			>
+				D
+			</div>
+			<div
+				class="room"
+				data-node="E"
+				style="left: 220px; top: 170px"
+			>
+				E
+			</div>
+			<div
+				class="room"
+				data-node="F"
+				style="left: 370px; top: 170px"
+			>
+				F
+			</div>
+
+			<div
+				class="room"
+				data-node="H"
+				style="left: 220px; top: 270px"
+			>
+				H
+			</div>
+			<div
+				class="room"
+				data-node="G"
+				style="left: 370px; top: 270px"
+			>
+				G
+			</div>
+		</div>
+	</body>
+</html>
